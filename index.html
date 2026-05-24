@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EthicPlay – RTU Citation Quest</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap"
+    rel="stylesheet">å
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d2e;
+      --surface2: #222640;
+      --surface3: #2b3155;
+      --accent: #6c63ff;
+      --accent2: #00d4aa;
+      --accent3: #ff6b6b;
+      --gold: #ffd700;
+      --text: #e8eaf6;
+      --text-muted: #8b90b8;
+      --border: rgba(108, 99, 255, 0.25);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --transition: 0.25s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(108, 99, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(0, 212, 170, 0.06) 0%, transparent 60%);
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 20px;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: var(--shadow);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Syne', sans-serif;
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .screen-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .screen-sub {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .input-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--accent);
+    }
+
+    .input-wrap input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      letter-spacing: 0.02em;
+    }
+
+    .btn:disabled {
+      pointer-events: none;
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #857af7);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--accent2), #00b894);
+      color: #0f1117;
+      font-weight: 700;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 170, 0.35);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--accent3), #e55);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.25);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm {
+      padding: 9px 18px;
+      font-size: 0.85rem;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .topic-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.84rem;
+      padding: 12px 10px;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+      min-height: 62px;
+    }
+
+    .topic-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .topic-btn.done {
+      border-color: var(--accent2);
+      background: rgba(0, 212, 170, 0.08);
+      color: var(--accent2);
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text-muted);
+    }
+
+    .stat-item span {
+      color: var(--text);
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+    }
+
+    .progress-wrap {
+      margin-bottom: 18px;
+    }
+
+    .progress-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-track {
+      background: var(--surface2);
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .nav-header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .nav-brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-back {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 99px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all var(--transition);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .nav-back:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .mini-game-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .symbol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+      margin: 0 auto 20px;
+    }
+
+    .symbol-btn {
+      aspect-ratio: 1;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .symbol-btn:hover {
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .symbol-btn.matched {
+      border-color: var(--accent2);
+      background: rgba(0, 212, 170, 0.1);
+    }
+
+    .tap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 320px;
+      margin: 0 auto 20px;
+    }
+
+    .tap-btn {
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      border: 2px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .tap-btn.active {
+      border-color: var(--accent2);
+      background: rgba(0, 212, 170, 0.15);
+      transform: scale(1.06);
+    }
+
+    .sort-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 0 auto 20px;
+      max-width: 640px;
+    }
+
+    .sort-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .sort-label {
+      text-align: left;
+      font-size: 0.92rem;
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .sort-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sort-btn {
+      padding: 8px 12px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .sort-btn.selected-good {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .sort-btn.selected-risk {
+      border-color: var(--accent3);
+      color: var(--accent3);
+    }
+
+    .detective-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 700px;
+      margin: 0 auto 18px;
+    }
+
+    .detective-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      text-align: left;
+      padding: 14px 16px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      transition: all var(--transition);
+      line-height: 1.5;
+    }
+
+    .detective-btn:hover {
+      border-color: var(--accent);
+      background: rgba(108, 99, 255, 0.08);
+    }
+
+    .detective-btn.correct {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: rgba(0, 212, 170, 0.1);
+    }
+
+    .detective-btn.wrong {
+      border-color: var(--accent3);
+      color: var(--accent3);
+      background: rgba(255, 107, 107, 0.08);
+    }
+
+    .question-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.55;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    .answer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .answer-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 14px 20px;
+      text-align: left;
+      cursor: pointer;
+      transition: all var(--transition);
+      line-height: 1.5;
+    }
+
+    .answer-btn:hover {
+      border-color: var(--accent);
+      background: rgba(108, 99, 255, 0.1);
+    }
+
+    .answer-btn.correct {
+      border-color: var(--accent2);
+      background: rgba(0, 212, 170, 0.12);
+      color: var(--accent2);
+    }
+
+    .answer-btn.wrong {
+      border-color: var(--accent3);
+      background: rgba(255, 107, 107, 0.1);
+      color: var(--accent3);
+    }
+
+    .feedback-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .feedback-msg {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feedback-detail {
+      background: var(--surface2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 16px 0;
+      text-align: left;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .resources {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 10px;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      line-height: 1.6;
+    }
+
+    .explanation-body {
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      margin-bottom: 16px;
+      text-align: left;
+      line-height: 1.75;
+      white-space: pre-line;
+    }
+
+    .ref-tag {
+      display: inline-block;
+      background: rgba(108, 99, 255, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      border-radius: 99px;
+      font-size: 0.78rem;
+      padding: 3px 12px;
+      margin-top: 10px;
+    }
+
+    .quiz-counter {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .quiz-score-mini {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+
+    .timer-display {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 16px;
+      color: var(--accent2);
+      transition: color 0.3s;
+    }
+
+    .timer-display.urgent {
+      color: var(--accent3);
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      to {
+        opacity: 0.6;
+      }
+    }
+
+    .result-score {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin: 16px 0 8px;
+    }
+
+    .badge-rack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 16px 0;
+    }
+
+    .badge-pill {
+      background: rgba(255, 215, 0, 0.12);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      color: var(--gold);
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .mistakes-list {
+      background: rgba(255, 107, 107, 0.07);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: left;
+      margin: 12px 0;
+      max-height: 210px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+
+    .final-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .final-progress {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .challenge-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .summary-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .summary-box .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .summary-box .value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .small-note {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .resume-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      margin-bottom: 16px;
+      text-align: left;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .flash {
+      animation: flashGlow 0.7s ease;
+    }
+
+    @keyframes flashGlow {
+      0% {
+        box-shadow: 0 0 0 rgba(0, 212, 170, 0);
+      }
+
+      40% {
+        box-shadow: 0 0 18px rgba(0, 212, 170, 0.35);
+      }
+
+      100% {
+        box-shadow: 0 0 0 rgba(0, 212, 170, 0);
+      }
+    }
+
+    .boss-tip {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        padding: 24px 20px;
+      }
+
+      .brand {
+        font-size: 2.2rem;
+      }
+
+      .topic-grid {
+        grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      }
+
+      .sort-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .sort-actions {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="screen active" id="screen-login">
+    <div class="card" style="text-align:center; max-width:560px;">
+      <div class="brand">EthicPlay</div>
+      <div class="brand-sub">RTU Citation Quest · Academic Integrity</div>
+
+      <div id="resumeInfo" class="resume-box"></div>
+
+      <div class="input-wrap" style="text-align:left;">
+        <input id="username" type="text" placeholder="Enter your name to begin…" autocomplete="off">
+      </div>
+
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn btn-primary btn-full" onclick="handleLogin()">▶ Start / Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-menu">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <span id="menu-greeting" style="font-size:0.85rem; color:var(--text-muted);"></span>
+    </div>
+
+    <div class="card">
+      <div class="screen-title">Choose an Ethical Learning Module</div>
+      <div class="screen-sub">Complete all academic integrity modules to unlock the Final Academic Integrity Assessment.</div>
+
+      <div class="stats-bar">
+        <div class="stat-item">🏆 Score <span id="scoreDisplay">0</span></div>
+        <div class="stat-item">⭐ XP <span id="xpDisplay">0</span></div>
+        <div class="stat-item">📈 Level <span id="levelDisplay">1</span></div>
+        <div class="stat-item">🔥 Streak <span id="streakDisplay">0</span></div>
+        <div class="stat-item">🛡️ Integrity <span id="integrityDisplay">100</span></div>
+        <div class="stat-item">🎖️ Badges <span id="badgeCount">0</span></div>
+        <div class="stat-item">📚 Done <span id="topicsDone">0/15</span></div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Level Progress</span><span id="levelProgressText">0 / 100 XP</span></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="levelProgressFill"
+            style="background:linear-gradient(90deg,var(--gold),var(--accent2));"></div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Integrity Meter</span><span id="integrityText">100 / 100</span></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="integrityFill"
+            style="background:linear-gradient(90deg,var(--accent3),var(--accent2)); width:100%;"></div>
+        </div>
+      </div>
+
+      <div class="topic-grid" id="topicList"></div>
+
+      <hr class="divider">
+
+      <div id="badgeSection" style="margin-bottom:16px; display:none;">
+        <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">🎖️ Your Badges</div>
+        <div class="badge-rack" id="badgeRack"></div>
+      </div>
+
+      <div class="btn-row">
+        <button id="finalTestBtn" class="btn btn-success btn-full" onclick="startFinal()">🔒 Complete all topics to
+          unlock Boss Round</button>
+        <button class="btn btn-danger btn-full" onclick="restartGame()">🗑️ Reset This Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-minigame">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <button class="nav-back" onclick="goMenuSafe()">← Menu</button>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div id="minigame-topic-label"
+        style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:8px;">
+      </div>
+      <h2 style="margin-bottom:6px;">Begin Learning Assessment</h2>
+      <p class="mini-game-title" id="miniGameTypeTitle">Complete the ethical scenario task</p>
+
+      <div id="memoryGameWrap">
+        <div class="symbol-grid" id="grid"></div>
+      </div>
+
+      <div id="tapGameWrap" style="display:none;">
+        <div class="tap-grid" id="tapGrid"></div>
+      </div>
+
+      <div id="sortGameWrap" style="display:none;">
+        <div class="sort-card-list" id="sortList"></div>
+        <button class="btn btn-primary" id="sortSubmitBtn" onclick="submitSortGame()">Check Sorting</button>
+      </div>
+
+      <div id="detectiveGameWrap" style="display:none;">
+        <div class="detective-list" id="detectiveList"></div>
+      </div>
+
+      <p style="font-size:0.8rem; color:var(--text-muted);" id="minigame-hint">Complete the ethical scenario task to continue</p>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-question">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <span id="q-topic-label" style="font-size:0.82rem; color:var(--text-muted);"></span>
+    </div>
+
+    <div class="card">
+      <div id="questionModeLabel"
+        style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:12px;">
+        📌 Entry Question</div>
+      <div class="question-text" id="question"></div>
+
+<div id="difficultyText"
+style="margin-bottom:16px;color:gold;font-size:0.85rem;font-weight:700;"></div>
+      <div class="answer-list" id="answers"></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-qfeedback">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="feedback-icon" id="qfeedback-icon"></div>
+      <div class="feedback-msg" id="questionFeedbackMsg"></div>
+      <div class="feedback-detail" id="questionFeedbackSuggest"></div>
+      <div class="resources">
+        Focus of this game: when citation is required, how RTU-style in-text citation works, how to treat paraphrase and
+        quotation, and how to avoid plagiarism in real thesis writing.
+      </div>
+      <div class="btn-row" style="justify-content:center; margin-top:20px;">
+        <button class="btn btn-primary" onclick="goToExplanation()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-explanation">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <button class="nav-back" onclick="goMenuSafe()">← Menu</button>
+    </div>
+
+    <div class="card">
+      <div id="exp-topic-label"
+        style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); margin-bottom:10px;">
+      </div>
+      <h2 style="margin-bottom:16px;">What You Should Know</h2>
+      <div class="explanation-body">
+        <p id="detail"></p>
+        <div class="ref-tag" id="reference"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="showSimple()">💡 Simpler Explanation</button>
+        <button class="btn btn-success" onclick="startQuiz()">📝 Practice Quiz</button>
+      </div>
+      <p class="small-note">Pass the quiz to mark this topic as done and earn a badge.</p>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-simple">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <button class="nav-back" onclick="showScreen('explanation')">← Back</button>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div style="font-size:2.5rem; margin-bottom:16px;">💡</div>
+      <h2 style="margin-bottom:20px;">Simple Version</h2>
+      <div class="explanation-body" style="text-align:center; font-size:1.1rem; font-style:italic;">
+        <p id="simpleText"></p>
+      </div>
+      <div class="btn-row" style="justify-content:center; margin-top:20px;">
+        <button class="btn btn-success" onclick="startQuiz()">📝 Ready — Take the Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-quiz">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <span class="quiz-score-mini" id="quizScoreMini">0 / 0</span>
+    </div>
+
+    <div class="card">
+      <div class="quiz-counter" id="quizCounter">Question 1 of 5</div>
+      <div class="progress-wrap" style="margin-bottom:20px;">
+        <div class="progress-track">
+          <div class="progress-fill" id="quizProgressFill"
+            style="background:linear-gradient(90deg,var(--accent2),var(--accent));"></div>
+        </div>
+      </div>
+      <div class="question-text" id="quizQ"></div>
+      <div class="answer-list" id="quizAns"></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-quizfeedback">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="feedback-icon" id="quizFeedbackIcon"></div>
+      <div class="feedback-msg" id="quizFeedbackMsg"></div>
+      <div style="font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; margin:10px 0;" id="quizScoreDisplay">
+      </div>
+      <div class="feedback-detail" id="quizFeedbackSuggest"></div>
+      <div class="resources">
+        Passing means you can use this citation skill more confidently in the RTU thesis context.
+      </div>
+      <div class="btn-row" style="justify-content:center; margin-top:20px;">
+        <button class="btn btn-secondary btn-sm" onclick="startQuiz()">🔁 Retry Quiz</button>
+        <button class="btn btn-primary" onclick="showScreen('menu'); updateStats();">✅ Next Topic</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-final">
+    <div class="nav-header">
+      <span class="nav-brand">EthicPlay</span>
+      <span class="final-progress" id="finalProgress">1 / 12</span>
+    </div>
+
+    <div class="card">
+      <div class="final-header">
+        <div class="challenge-label">🏁 Final Academic Integrity Assessment</div>
+      </div>
+      <div class="timer-display" id="timer">75</div>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="finalProgressFill"
+            style="background:linear-gradient(90deg,var(--accent3),var(--gold));"></div>
+        </div>
+      </div>
+      <div class="question-text" id="finalQ"></div>
+      <div class="answer-list" id="finalAns"></div>
+      <div class="boss-tip">You are checking a thesis before submission. Each choice should protect academic integrity.
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-result">
+    <div class="card" style="text-align:center;">
+      <div
+        style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent2); margin-bottom:8px;">
+        🎓 Final Thesis Integrity Review</div>
+      <h2 style="margin-bottom:4px;" id="resultGreeting"></h2>
+      <div class="result-score" id="scoreText">0</div>
+      <p style="color:var(--text-muted); font-size:0.88rem; margin-bottom:10px;">total points earned</p>
+
+      <div class="summary-grid">
+        <div class="summary-box">
+          <div class="label">Entry Correct</div>
+          <div class="value" id="resultEntryScore">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Quiz Correct</div>
+          <div class="value" id="resultQuizScore">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Boss Correct</div>
+          <div class="value" id="resultBossScore">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">XP</div>
+          <div class="value" id="resultXP">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Level</div>
+          <div class="value" id="resultLevel">1</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Best Streak</div>
+          <div class="value" id="resultBestStreak">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Integrity</div>
+          <div class="value" id="resultIntegrity">100</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Topics Done</div>
+          <div class="value" id="resultTopicsDone">0/15</div>
+        </div>
+
+        <div class="summary-box">
+          <div class="label">Citation Reliability</div>
+          <div class="value" id="citationReliability">0%</div>
+        </div>
+
+        <div class="summary-box">
+          <div class="label">AI Transparency</div>
+          <div class="value" id="aiTransparency">0%</div>
+        </div>
+
+        <div class="summary-box">
+          <div class="label">Academic Risk</div>
+          <div class="value" id="academicRisk">LOW</div>
+        </div>
+
+        <div class="summary-box">
+          <div class="label">Performance Rating</div>
+          <div class="value" id="performanceRating">-</div>
+        </div>
+      </div>
+
+      <div style="text-align:left;">
+        <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">🎖️ Badges Earned</div>
+        <div class="badge-rack" id="finalBadges"></div>
+      </div>
+
+      <div id="mistakesSection" style="margin-top:16px; text-align:left; display:none;">
+        <div style="font-size:0.8rem; color:var(--accent3); margin-bottom:8px;">⚠️ Topics to Review</div>
+        <div class="mistakes-list" id="mistakesText"></div>
+      </div>
+
+      <hr class="divider">
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn btn-primary" onclick="showScreen('menu'); updateStats();">📚 Back to Menu</button>
+        <button class="btn btn-danger" onclick="restartGame()">🗑️ Reset This Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       STATE
+    ============================================================ */
+    let score = 0;
+    let xp = 0;
+    let level = 1;
+    let streak = 0;
+    let bestStreak = 0;
+    let integrity = 100;
+    let mistakes = [];
+let weakAreas = {};
+    let currentTopic = 0;
+    let quizIndex = 0;
+    let quizScore = 0;
+    let finalIndex = 0;
+    let time = 75;
+    let timerInterval = null;
+    let username = "";
+    let readTopics = [];
+    let badges = [];
+    let finalQuestions = [];
+    let currentMiniGame = "memory";
+    let currentSortChoices = {};
+    let tapTargetCount = 5;
+    let tapCurrentHits = 0;
+    let isBusyAnswer = false;
+
+    let entryCorrectCount = 0;
+    let quizCorrectCount = 0;
+    let bossCorrectCount = 0;
+
+    const QUIZ_PASS_MARK = 4;
+    const XP_PER_LEVEL = 100;
+
+    const DEFAULT_GAME_STATE = {
+      score: 0,
+      xp: 0,
+      level: 1,
+      streak: 0,
+      bestStreak: 0,
+      integrity: 100,
+      mistakes: [],
+      readTopics: [],
+      badges: [],
+      entryCorrectCount: 0,
+      quizCorrectCount: 0,
+      bossCorrectCount: 0
+    };
+
+    /* ============================================================
+       CONTENT
+    ============================================================ */
+    const topics = [
+      {
+        title: "Need Citation?",
+        difficulty: "basic",
+        q: "Which statement most clearly needs a citation in a thesis?",
+        a: [
+          "Renewable energy reduces emissions according to recent research.",
+          "In this chapter, I describe my thesis structure.",
+          "My appendix contains screenshots."
+        ],
+        c: 0,
+        detail: "RTU states that a graduation thesis should not contain unsubstantiated statements. If you use ideas, findings, or content from other authors, you should reference the source in the body text.\n\nCore rule: borrowed knowledge needs citation; your own thesis structure or personal research actions usually do not.",
+        ref: "RTU Thesis Guidelines – References",
+        simple: "If the idea came from a source, cite it. If it is only your own thesis action or structure, usually no citation is needed."
+      },
+      {
+        title: "Common Knowledge",
+        difficulty: "basic",
+        q: "Which sentence is most likely common knowledge and usually does NOT need citation?",
+        a: [
+          "Riga Technical University was founded in the 19th century according to archive document X.",
+          "Water freezes at 0°C under standard conditions.",
+          "A 2023 study proved that one exact app improves all learning outcomes."
+        ],
+        c: 1,
+        detail: "Not every sentence needs citation. Widely known, basic facts are often treated as common knowledge. But specific claims, study findings, special statistics, or debatable statements should be cited.",
+        ref: "RTU Thesis Guidelines – substantiated statements",
+        simple: "Very basic well-known facts often do not need citation. Specific claims and research results do."
+      },
+      {
+        title: "Quote vs Paraphrase",
+        difficulty: "medium",
+        q: "Which option is a paraphrase rather than a quotation?",
+        a: [
+          "\"Renewable energy is used to reduce harmful emissions.\"",
+          "Renewable energy can help lower harmful emissions and support sustainability.",
+          "\"AI tools provide new opportunities for knowledge acquisition.\""
+        ],
+        c: 1,
+        detail: "RTU distinguishes quotation and paraphrase. A quotation reproduces exact words and needs quotation marks plus citation. A paraphrase retells the idea in your own words, but it still needs citation.",
+        ref: "RTU Thesis Guidelines – quotation and paraphrase",
+        simple: "Quote = exact words. Paraphrase = same idea in your own words. Both still need citation."
+      },
+      {
+        title: "One Author",
+        q: "Which author-year in-text citation is correctly formatted for one author?",
+        a: [
+          "[Schenfelde 2012]",
+          "(Schenfelde, 2012)",
+          "Schenfelde / 2012"
+        ],
+        c: 1,
+        detail: "RTU says the preferred referencing method is author and year in round brackets after the used content, for example: (Schenfelde, 2012).",
+        ref: "RTU Thesis Guidelines – author-year references",
+        simple: "For one author, use: (Surname, year)."
+      },
+      {
+        title: "Two Authors",
+        q: "Which in-text citation is correct for two authors in RTU author-year style?",
+        a: [
+          "(Black and White 2023)",
+          "(Black & White, 2023)",
+          "(Black, White et al., 2023)"
+        ],
+        c: 1,
+        detail: "RTU specifies that if a source has two authors, both surnames should appear, separated by '&', followed by the year: (Black & White, 2023).",
+        ref: "RTU Thesis Guidelines – two-author format",
+        simple: "Two authors = (Author1 & Author2, year)."
+      },
+      {
+        title: "More Than Two Authors",
+        q: "Which citation follows RTU guidance for more than two authors?",
+        a: [
+          "(Grey, Green et al., 2024)",
+          "(Grey et others, 2024)",
+          "(Grey, Green, Blue, Red, 2024)"
+        ],
+        c: 0,
+        detail: "RTU states that for more than two authors, the first and second surnames are given, followed by 'et al.' and the year: (Grey, Green et al., 2024).",
+        ref: "RTU Thesis Guidelines – multiple authors",
+        simple: "More than two authors = first two surnames + et al. + year."
+      },
+      {
+        title: "Multiple Sources",
+        q: "Which option correctly cites several sources together?",
+        a: [
+          "(Black & White, 2023; Grey, 2020)",
+          "(Black & White, 2023, Grey, 2020)",
+          "[Black & White, 2023 / Grey, 2020]"
+        ],
+        c: 0,
+        detail: "RTU says that if several sources are cited together in author-year style, they should be placed in one set of round brackets and separated by semicolons.",
+        ref: "RTU Thesis Guidelines – several sources",
+        simple: "Multiple sources together = one bracket, separated by semicolons."
+      },
+      {
+        title: "Same Author, Same Year",
+        q: "If the same author published two relevant sources in the same year, what should happen?",
+        a: [
+          "Use the same citation for both and hope the reader understands.",
+          "Add letters after the year, like 2024a and 2024b.",
+          "Do not cite one of them."
+        ],
+        c: 1,
+        detail: "RTU states that if the same authors have multiple sources from the same year, the citations should be distinguished with letters such as 2024a and 2024b, both in text and in the reference list.",
+        ref: "RTU Thesis Guidelines – same year lettering",
+        simple: "Same author + same year = add letters: a, b, c."
+      },
+      {
+        title: "Citing Lists",
+        q: "When does a list need a citation?",
+        a: [
+          "When the list is taken, summarised, or adapted from sources.",
+          "Never. Lists are always your own.",
+          "Only if the list has more than five bullets."
+        ],
+        c: 0,
+        detail: "RTU explains that references may be placed before lists or at the end of list entries if the list is taken from a source or built by summarising source-based information.",
+        ref: "RTU Thesis Guidelines – lists and references",
+        simple: "If the list comes from sources or summarises them, cite it."
+      },
+      {
+        title: "Citing Figures",
+        q: "A figure copied exactly from another source should usually be marked as:",
+        a: [
+          "adopted from",
+          "invented by me",
+          "optional reference"
+        ],
+        c: 0,
+        detail: "RTU says that figures taken with no changes should be marked 'adopted from'; if changed, use 'adapted from' or 'modified from'. Figures taken, translated, or modified from sources should be accompanied by a reference.",
+        ref: "RTU Thesis Guidelines – figures",
+        simple: "Exact figure from a source = adopted from. Changed figure = adapted or modified from."
+      },
+      {
+        title: "Citing Tables",
+        q: "A table translated from another source into English still needs:",
+        a: [
+          "no citation because the language changed",
+          "a citation to the original source",
+          "only a new table number"
+        ],
+        c: 1,
+        detail: "RTU states that tables taken, modified, or translated from other sources should still be accompanied by a reference.",
+        ref: "RTU Thesis Guidelines – tables",
+        simple: "Translation does not remove citation. A translated table still needs a source."
+      },
+      {
+        title: "Code and Formula",
+        q: "Which statement is correct under RTU guidance?",
+        a: [
+          "Code or formulas from the web do not need citation if they are short.",
+          "Code fragments, formulas, and similar borrowed content should also be referenced.",
+          "Only books need citation, not technical fragments."
+        ],
+        c: 1,
+        detail: "RTU explicitly states that formulas, code fragments, and similar borrowed material taken, modified, or translated from sources should be accompanied by references.",
+        ref: "RTU Thesis Guidelines – formulas and code",
+        simple: "Borrowed code or formulas also need citation."
+      },
+      {
+        title: "Reference List",
+        q: "Which principle is essential for the reference list?",
+        a: [
+          "Mix multiple styles for variety.",
+          "Use one style consistently throughout the thesis.",
+          "Only cite sources in text; the list is optional."
+        ],
+        c: 1,
+        detail: "RTU says the chosen referencing style should be applied consistently throughout the thesis and that mixing styles is not allowed.",
+        ref: "RTU Thesis Guidelines – list of references",
+        simple: "Choose one referencing style and use it consistently."
+      },
+      {
+        title: "Plagiarism Traps",
+        difficulty: "advanced",
+        q: "Which action is plagiarism under RTU guidance?",
+        a: [
+          "Paraphrasing another author's idea without citation.",
+          "Paraphrasing and citing the source.",
+          "Summarising two papers and adding both citations."
+        ],
+        c: 0,
+        detail: "RTU explains that references are required even when content is paraphrased or translated. Changing the wording does not make the idea your own.",
+        ref: "RTU Thesis Guidelines – academic integrity",
+        simple: "Changing the words is not enough. If the idea came from a source, cite it."
+      },
+      {
+        title: "Citing AI Tools",
+        difficulty: "advanced",
+        q: "How should AI-generated content be treated in the RTU context?",
+        a: [
+          "Hide it because it is only tool assistance.",
+          "Disclose and cite the AI tool use properly.",
+          "Only mention it verbally to the supervisor."
+        ],
+        c: 1,
+        detail: "RTU states that unreferenced use of AI-generated content is a form of plagiarism. The guidelines also provide a format for citing generative AI tools using the tool, prompt, address, and date.",
+        ref: "RTU Thesis Guidelines – AI tool references",
+        simple: "If AI generated content for your thesis, disclose it and cite it properly."
+      }
+    ];
+
+    const quizBanks = [
+      [
+        { q: "Which sentence most likely needs citation?", a: ["This section presents my own system architecture.", "Researchers identified several limitations of current tutoring systems.", "Appendix 2 shows survey screenshots."], c: 1 },
+        { q: "A borrowed claim in the body text should be:", a: ["Left unsupported", "Cited in the body text", "Moved to appendix"], c: 1 },
+        { q: "RTU says a thesis should avoid:", a: ["Unsubstantiated statements", "Clear structure", "Section headings"], c: 0 },
+        { q: "If you use another author's idea indirectly, you should:", a: ["Still cite it", "Treat it as your own", "Only cite if quoted word-for-word"], c: 0 },
+        { q: "A citation is mainly about:", a: ["Decoration", "Attribution and traceability", "Making the page longer"], c: 1 }
+      ],
+      [
+        { q: "Which is most likely common knowledge?", a: ["A specific 2024 result from one article", "Basic physical property widely known in science", "A controversial interpretation"], c: 1 },
+        { q: "Specific statistics usually:", a: ["Need citation", "Never need citation", "Only need citation in appendices"], c: 0 },
+        { q: "A narrow claim from one study is:", a: ["Common knowledge", "Usually source-based", "Always uncitable"], c: 1 },
+        { q: "When in doubt, the safer academic choice is to:", a: ["Cite the source", "Hide uncertainty", "Delete the sentence"], c: 0 },
+        { q: "Common knowledge usually means:", a: ["Widely known basic fact", "Any idea you like", "Anything found online"], c: 0 }
+      ],
+      [
+        { q: "A quotation uses:", a: ["Exact words", "Only your own words", "No citation"], c: 0 },
+        { q: "A paraphrase should:", a: ["Retell the idea accurately", "Copy word-for-word", "Remove the original meaning"], c: 0 },
+        { q: "A quotation in a thesis needs:", a: ["Quotation marks and citation", "Only quotation marks", "Only indentation"], c: 0 },
+        { q: "Paraphrasing without citation is:", a: ["Still plagiarism", "Always safe", "Recommended"], c: 0 },
+        { q: "The main difference is:", a: ["Quote = exact words, paraphrase = restated idea", "Quote = no source, paraphrase = source", "There is no difference"], c: 0 }
+      ],
+      [
+        { q: "Correct one-author style is:", a: ["(Schenfelde, 2012)", "[Schenfelde, 2012]", "Schenfelde 2012 /"], c: 0 },
+        { q: "One-author citation uses:", a: ["Surname and year", "First name and page only", "Title and URL"], c: 0 },
+        { q: "RTU prefers author-year references in:", a: ["Round brackets", "Square brackets only", "Footnotes only"], c: 0 },
+        { q: "If the author's name is in the sentence, RTU allows:", a: ["Berzins (2021) argues...", "Berzins / 2021 says...", "Berzins [year missing]"], c: 0 },
+        { q: "Which is best?", a: ["(Author, year)", "(Author year page unknown)", "Author-year without brackets"], c: 0 }
+      ],
+      [
+        { q: "Two authors in RTU style are joined with:", a: ["&", "and and", "/"], c: 0 },
+        { q: "Correct two-author citation:", a: ["(Black & White, 2023)", "(Black, White, 2023)", "(Black et White, 2023)"], c: 0 },
+        { q: "Two authors means:", a: ["Both surnames should appear", "Only first surname appears", "Only journal title appears"], c: 0 },
+        { q: "The year goes:", a: ["After the author names", "Before the authors", "In the reference list only"], c: 0 },
+        { q: "Which one is incorrect?", a: ["(Taylor & Stone, 2022)", "(Taylor, Stone, 2022)", "(Taylor & Stone, 2022)"], c: 1 }
+      ],
+      [
+        { q: "For more than two authors, RTU uses:", a: ["First two surnames + et al.", "Only first surname", "All surnames always"], c: 0 },
+        { q: "Correct example:", a: ["(Grey, Green et al., 2024)", "(Grey et al., 2024)", "(Grey, Green, Blue, Red, 2024)"], c: 0 },
+        { q: "The term 'et al.' means:", a: ["And others", "Exact copy", "One author only"], c: 0 },
+        { q: "RTU's example with many authors includes:", a: ["First and second author surnames", "First author only", "Journal title"], c: 0 },
+        { q: "Too many names in the citation makes it:", a: ["Needlessly bulky", "Always better", "Required in RTU style"], c: 0 }
+      ],
+      [
+        { q: "Several sources together should be separated by:", a: ["Semicolons", "Commas only", "Slashes"], c: 0 },
+        { q: "Correct grouping:", a: ["(Black & White, 2023; Grey, 2020)", "(Black & White, 2023, Grey, 2020)", "[Black & White; Grey]"], c: 0 },
+        { q: "Multiple sources should usually be put:", a: ["In one set of round brackets", "On separate pages", "In the abstract"], c: 0 },
+        { q: "Why cite multiple sources together?", a: ["To support one statement with several sources", "To avoid reference lists", "To hide the real source"], c: 0 },
+        { q: "A semicolon in citation mainly separates:", a: ["Different sources", "Different words in one title", "Page numbers"], c: 0 }
+      ],
+      [
+        { q: "Two works by same author in same year become:", a: ["2024a and 2024b", "2024 and 2024", "2024-1 and 2024-2 only in appendix"], c: 0 },
+        { q: "The letters should appear:", a: ["In both citation and references list", "Only in the reference list", "Only in chapter headings"], c: 0 },
+        { q: "Why add letters?", a: ["To distinguish sources clearly", "To make the page look formal", "To avoid naming authors"], c: 0 },
+        { q: "Which is correct?", a: ["(Grey, Green et al., 2024a)", "(Grey, Green et al., 2024 same)", "(Grey, Green et al., 2024 version 2)"], c: 0 },
+        { q: "Without the letters, the reader may:", a: ["Not know which source you mean", "Understand better", "Ignore the source"], c: 0 }
+      ],
+      [
+        { q: "A list built from several sources should:", a: ["Have citation support", "Never be cited", "Be moved to footnote"], c: 0 },
+        { q: "RTU allows references for lists:", a: ["Before the list or at entries, depending on use", "Only in the title page", "Nowhere"], c: 0 },
+        { q: "A list copied from a source is:", a: ["Source-based and citable", "Automatically your own", "Not academic content"], c: 0 },
+        { q: "If every bullet has a different source, you may:", a: ["Cite each entry", "Use one random source at the end", "Skip all references"], c: 0 },
+        { q: "A list without source even though it was borrowed is:", a: ["A citation problem", "Acceptable", "Only formatting issue"], c: 0 }
+      ],
+      [
+        { q: "An unchanged figure from a source should say:", a: ["adopted from", "adapted from", "invented from"], c: 0 },
+        { q: "A changed figure from a source may say:", a: ["adapted from", "no reference needed", "nothing at all"], c: 0 },
+        { q: "Figure references should appear:", a: ["With the figure when source-based", "Only in acknowledgements", "Only in oral defense"], c: 0 },
+        { q: "Translated figure from another language:", a: ["Still needs citation", "Becomes fully original", "Needs only new colors"], c: 0 },
+        { q: "Which is safest?", a: ["State source relationship clearly", "Hope the reader guesses", "Hide the origin"], c: 0 }
+      ],
+      [
+        { q: "A table translated from another source:", a: ["Still needs citation", "Needs no citation because language changed", "Needs only page number"], c: 0 },
+        { q: "An unchanged table may be marked:", a: ["adopted from", "inspired by maybe", "not cited"], c: 0 },
+        { q: "Large source-based tables are often recommended for:", a: ["Appendices", "Title page", "Abstract"], c: 0 },
+        { q: "A table built by combining source data is often:", a: ["modified or adapted from", "uncitable", "purely original automatically"], c: 0 },
+        { q: "Table citation helps the reader:", a: ["Trace the source", "Ignore the data", "Skip analysis"], c: 0 }
+      ],
+      [
+        { q: "Borrowed formula in RTU context:", a: ["Should be cited", "Never needs citation", "Only needs numbering"], c: 0 },
+        { q: "Borrowed code fragment:", a: ["Should be cited too", "Becomes your own if short", "Needs citation only if colored"], c: 0 },
+        { q: "Formula references can include:", a: ["adopted from / adapted from", "No source wording ever", "Only chapter numbers"], c: 0 },
+        { q: "Code included in the body text is:", a: ["Still subject to citation rules when borrowed", "Outside academic integrity", "Always uncited"], c: 0 },
+        { q: "A web formula without citation is:", a: ["A source problem", "Perfectly acceptable", "Only a style issue"], c: 0 }
+      ],
+      [
+        { q: "The reference list should contain:", a: ["Sources cited in the thesis", "Random extra books", "Only websites"], c: 0 },
+        { q: "RTU warns against:", a: ["Mixing styles", "Using alphabetic order", "Using source titles"], c: 0 },
+        { q: "Entries should be:", a: ["Consistent and traceable", "Different on every page", "Shortened until incomplete"], c: 0 },
+        { q: "A source cited in text but missing from the list is:", a: ["A problem", "Normal", "Recommended"], c: 0 },
+        { q: "A source in the list but never used in text is:", a: ["Also poor practice", "Mandatory", "Ideal"], c: 0 }
+      ],
+      [
+        { q: "Paraphrasing without citation is:", a: ["Plagiarism", "Original writing", "Only grammar issue"], c: 0 },
+        { q: "One reference only at the end of a copied paragraph may be:", a: ["Insufficient and misleading", "Always enough", "Better than citation in sentences"], c: 0 },
+        { q: "Borrowed references means:", a: ["Taking someone else's references without citing the source you actually used", "Using too many books", "Adding DOI"], c: 0 },
+        { q: "Inaccurate references include:", a: ["Wrong year or wrong author order", "Only long URLs", "Chapter titles"], c: 0 },
+        { q: "Self-plagiarism means:", a: ["Using your own previous work without proper reference", "Quoting a book", "Using headings"], c: 0 }
+      ],
+      [
+        { q: "RTU treats unreferenced AI-generated content as:", a: ["Plagiarism risk", "No problem", "Only software issue"], c: 0 },
+        { q: "The AI reference format in RTU includes:", a: ["Tool, prompt, web address, date", "Only the tool name", "Only your username"], c: 0 },
+        { q: "If AI generated an image for the thesis:", a: ["That use should also be referenced", "It becomes uncitable", "You should hide it"], c: 0 },
+        { q: "RTU also mentions including in appendices:", a: ["A screenshot of the AI response", "A handwritten apology", "No evidence"], c: 0 },
+        { q: "Most important principle for AI use is:", a: ["Transparency", "Silence", "Guesswork"], c: 0 }
+      ]
+    ];
+
+    const scenarioTopics = {
+      0: {
+        severity: "medium",
+        q: "A student writes: 'Modern tutoring systems adapt content to learner needs.' The idea came from two journal articles, but the sentence has no citation. What is the best fix?",
+        a: [
+          "Add proper source citation in the text.",
+          "Leave it because the wording is short.",
+          "Only cite it in the appendix."
+        ],
+        c: 0
+      },
+      2: {
+        severity: "medium",
+        q: "You rewrote an author's sentence in your own words, but the idea is still theirs. What should you do?",
+        a: [
+          "Treat it as fully original because the wording changed.",
+          "Add citation because it is a paraphrase.",
+          "Only cite if more than 20 words were changed."
+        ],
+        c: 1
+      },
+      6: {
+        severity: "medium",
+        q: "One sentence in your literature review is supported by three different papers. What is the best RTU-style move?",
+        a: [
+          "Put all relevant sources in one bracket separated by semicolons.",
+          "Use only one source even if others matter.",
+          "Split the sentence into three copies."
+        ],
+        c: 0
+      },
+      8: {
+        severity: "medium",
+        q: "You built a bullet list by summarising three papers. What should you do?",
+        a: [
+          "Cite the source basis of the list.",
+          "Leave it uncited because lists are your own formatting.",
+          "Delete the list and use no sources."
+        ],
+        c: 0
+      },
+      9: {
+        severity: "high",
+        q: "You inserted a figure from a published article without changing it. What is the best label?",
+        a: [
+          "adopted from (Author, year)",
+          "no citation needed",
+          "modified from (even though unchanged)"
+        ],
+        c: 0
+      },
+      10: {
+        severity: "medium",
+        q: "You translated a table from another language into English. What now?",
+        a: [
+          "No citation, because translation makes it yours.",
+          "Still cite the original source.",
+          "Only cite if the teacher asks."
+        ],
+        c: 1
+      },
+      11: {
+        severity: "high",
+        q: "You copied a useful code fragment from a website into your thesis appendix. What is academically correct?",
+        a: [
+          "Cite the source of the code fragment.",
+          "Ignore citation because code is technical.",
+          "Cite only if the code compiles."
+        ],
+        c: 0
+      },
+      13: {
+        severity: "critical",
+        q: "A student paraphrases a full paragraph from one source and puts one citation only after the last sentence. Why is this risky?",
+        a: [
+          "Because RTU warns that a citation normally applies to the sentence where it is placed, leaving earlier borrowed sentences uncredited.",
+          "Because paragraphs can never contain citations.",
+          "Because only quotations are allowed in literature review."
+        ],
+        c: 0
+      },
+      14: {
+        severity: "high",
+        q: "You used ChatGPT to generate explanation text and part of an image concept for the thesis. What is the correct academic action?",
+        a: [
+          "Disclose and cite the AI tool use appropriately.",
+          "Hide it because AI is only a helper.",
+          "Mention it only verbally."
+        ],
+        c: 0
+      }
+    };
+
+    const topicMiniChallenges = {
+      0: {
+        type: "sort",
+        title: "Citation Need Sort",
+        hint: "Mark each statement as Needs Citation or No Citation",
+        labels: { good: "Needs Citation", risk: "No Citation" },
+        items: [
+          { id: 1, text: "A sentence summarising another author's research result.", correct: "ethical" },
+          { id: 2, text: "A sentence explaining your own chapter structure.", correct: "risky" },
+          { id: 3, text: "A claim supported by published literature.", correct: "ethical" }
+        ]
+      },
+      2: {
+        type: "sort",
+        title: "Quote vs Paraphrase Sort",
+        hint: "Sort correctly before continuing",
+        labels: { good: "Proper Paraphrase", risk: "Quoted Exact Words" },
+        items: [
+          { id: 1, text: "\"Renewable energy is used to reduce harmful emissions.\"", correct: "risky" },
+          { id: 2, text: "Renewable energy can lower harmful emissions and support sustainability.", correct: "ethical" },
+          { id: 3, text: "\"AI tools provide new opportunities for knowledge acquisition.\"", correct: "risky" }
+        ]
+      },
+      3: {
+        type: "detective",
+        title: "One-Author Citation Detective",
+        hint: "Find the correct RTU-style citation",
+        prompt: "Which option follows the preferred author-year style?",
+        options: [
+          "(Schenfelde, 2012)",
+          "[Schenfelde 2012]",
+          "Schenfelde / 2012"
+        ],
+        correctIndex: 0
+      },
+      4: {
+        type: "detective",
+        title: "Two-Author Citation Detective",
+        hint: "Find the correct citation",
+        prompt: "Which one is correct for two authors?",
+        options: [
+          "(Black & White, 2023)",
+          "(Black, White, 2023)",
+          "(Black and White 2023)"
+        ],
+        correctIndex: 0
+      },
+      5: {
+        type: "detective",
+        title: "Many Authors Detective",
+        hint: "Find the RTU-style pattern",
+        prompt: "Which option correctly handles more than two authors?",
+        options: [
+          "(Grey, Green et al., 2024)",
+          "(Grey et al., 2024)",
+          "(Grey, Green, Blue, Red, 2024)"
+        ],
+        correctIndex: 0
+      },
+      8: {
+        type: "sort",
+        title: "List Citation Challenge",
+        hint: "Decide which list actions are academically safe",
+        labels: { good: "Source-Based", risk: "No Source Needed" },
+        items: [
+          { id: 1, text: "A list copied from a handbook.", correct: "ethical" },
+          { id: 2, text: "A list summarising three papers.", correct: "ethical" },
+          { id: 3, text: "A list of your own task reminders.", correct: "risky" }
+        ]
+      },
+      9: {
+        type: "sort",
+        title: "Figure Label Challenge",
+        hint: "Choose the right source relationship",
+        labels: { good: "Needs Source Label", risk: "No Source Label" },
+        items: [
+          { id: 1, text: "Figure copied exactly from a paper.", correct: "ethical" },
+          { id: 2, text: "Figure changed from the original version.", correct: "ethical" },
+          { id: 3, text: "Figure drawn fully by you from your own data.", correct: "risky" }
+        ]
+      },
+      13: {
+        type: "detective",
+        title: "Plagiarism Spotter",
+        hint: "Find the plagiarism risk",
+        prompt: "Which action is clearly a plagiarism trap?",
+        options: [
+          "Paraphrasing a source and citing it properly.",
+          "Paraphrasing a source without citation.",
+          "Comparing two cited papers critically."
+        ],
+        correctIndex: 1
+      },
+      14: {
+        type: "detective",
+        title: "AI Citation Detective",
+        hint: "Pick the transparent option",
+        prompt: "Which action best matches RTU expectations for AI-generated content?",
+        options: [
+          "Disclose the tool and cite its use properly.",
+          "Hide the AI use if the output sounds academic.",
+          "Mention the tool only to classmates."
+        ],
+        correctIndex: 0
+      }
+    };
+
+    /* ============================================================
+       SAVE / LOAD
+    ============================================================ */
+    function getSaveKey(name = username) {
+      return "EthicPlayCitation_" + name.trim();
+    }
+
+    function hasSave(name) {
+      if (!name || !name.trim()) return false;
+      return !!localStorage.getItem(getSaveKey(name));
+    }
+
+    function peekSave(name) {
+      try {
+        const raw = localStorage.getItem(getSaveKey(name));
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        return {
+          level: Number.isFinite(data.level) ? data.level : 1,
+          xp: Number.isFinite(data.xp) ? data.xp : 0,
+          integrity: Number.isFinite(data.integrity) ? clamp(data.integrity, 0, 100) : 100,
+          topicsDone: Array.isArray(data.readTopics) ? data.readTopics.length : 0,
+          badges: Array.isArray(data.badges) ? data.badges.length : 0
+        };
+      } catch {
+        return null;
+      }
+    }
+
+    function resetGameState() {
+      score = DEFAULT_GAME_STATE.score;
+      xp = DEFAULT_GAME_STATE.xp;
+      level = DEFAULT_GAME_STATE.level;
+      streak = DEFAULT_GAME_STATE.streak;
+      bestStreak = DEFAULT_GAME_STATE.bestStreak;
+      integrity = DEFAULT_GAME_STATE.integrity;
+      mistakes = [...DEFAULT_GAME_STATE.mistakes];
+      readTopics = [...DEFAULT_GAME_STATE.readTopics];
+      badges = [...DEFAULT_GAME_STATE.badges];
+      entryCorrectCount = DEFAULT_GAME_STATE.entryCorrectCount;
+      quizCorrectCount = DEFAULT_GAME_STATE.quizCorrectCount;
+      bossCorrectCount = DEFAULT_GAME_STATE.bossCorrectCount;
+
+      currentTopic = 0;
+      quizIndex = 0;
+      quizScore = 0;
+      finalIndex = 0;
+      time = 75;
+      finalQuestions = [];
+      currentMiniGame = "memory";
+      currentSortChoices = {};
+      tapCurrentHits = 0;
+      isBusyAnswer = false;
+
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function saveGame() {
+      if (!username) return;
+      const payload = {
+        version: 3,
+        score,
+        xp,
+        level,
+        streak,
+        bestStreak,
+        integrity,
+        mistakes,
+        readTopics,
+        badges,
+        entryCorrectCount,
+        quizCorrectCount,
+        bossCorrectCount
+      };
+      localStorage.setItem(getSaveKey(), JSON.stringify(payload));
+    }
+
+    function loadGame() {
+      const raw = localStorage.getItem(getSaveKey());
+      if (!raw) {
+        resetGameState();
+        return;
+      }
+
+      try {
+        const data = JSON.parse(raw);
+
+        score = Number.isFinite(data.score) ? data.score : DEFAULT_GAME_STATE.score;
+        xp = Number.isFinite(data.xp) ? data.xp : DEFAULT_GAME_STATE.xp;
+        level = Number.isFinite(data.level) ? data.level : Math.floor(xp / XP_PER_LEVEL) + 1;
+        streak = Number.isFinite(data.streak) ? data.streak : DEFAULT_GAME_STATE.streak;
+        bestStreak = Number.isFinite(data.bestStreak) ? data.bestStreak : DEFAULT_GAME_STATE.bestStreak;
+        integrity = Number.isFinite(data.integrity) ? clamp(data.integrity, 0, 100) : DEFAULT_GAME_STATE.integrity;
+        mistakes = Array.isArray(data.mistakes) ? data.mistakes : [...DEFAULT_GAME_STATE.mistakes];
+        readTopics = Array.isArray(data.readTopics) ? data.readTopics : [...DEFAULT_GAME_STATE.readTopics];
+        badges = Array.isArray(data.badges) ? data.badges : [...DEFAULT_GAME_STATE.badges];
+        entryCorrectCount = Number.isFinite(data.entryCorrectCount) ? data.entryCorrectCount : 0;
+        quizCorrectCount = Number.isFinite(data.quizCorrectCount) ? data.quizCorrectCount : 0;
+        bossCorrectCount = Number.isFinite(data.bossCorrectCount) ? data.bossCorrectCount : 0;
+
+        currentTopic = 0;
+        quizIndex = 0;
+        quizScore = 0;
+        finalIndex = 0;
+        time = 75;
+        finalQuestions = [];
+        currentMiniGame = "memory";
+        currentSortChoices = {};
+        tapCurrentHits = 0;
+        isBusyAnswer = false;
+
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      } catch {
+        resetGameState();
+      }
+    }
+
+    /* ============================================================
+       HELPERS
+    ============================================================ */
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function prepareShuffledAnswers(options, correctIndex) {
+      const prepared = options.map((text, index) => ({
+        text,
+        isCorrect: index === correctIndex
+      }));
+      return shuffleArray(prepared);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen-' + id).classList.add('active');
+    }
+
+    function flashStats() {
+      const bar = document.querySelector('.stats-bar');
+      if (!bar) return;
+      bar.classList.remove('flash');
+      void bar.offsetWidth;
+      bar.classList.add('flash');
+    }
+
+    function getLevelFromXP() {
+      return Math.floor(xp / XP_PER_LEVEL) + 1;
+    }
+
+    function getLevelProgressPercent() {
+      return ((xp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100;
+    }
+
+    function addSpecialBadge(name) {
+      if (!badges.includes(name)) {
+        badges.push(name);
+        saveGame();
+      }
+    }
+
+    function addXP(amount) {
+      const oldLevel = level;
+      xp += amount;
+      level = getLevelFromXP();
+
+      if (level > oldLevel) {
+        addSpecialBadge("Level Up");
+      }
+      saveGame();
+    }
+
+    function changeIntegrity(amount) {
+      integrity = clamp(integrity + amount, 0, 100);
+      if (integrity >= 90) addSpecialBadge("High Integrity");
+      saveGame();
+    }
+
+    function registerCorrectAnswer(baseXP, bucket) {
+      score++;
+      streak++;
+      if (streak > bestStreak) bestStreak = streak;
+
+      if (bucket === "entry") entryCorrectCount++;
+      if (bucket === "quiz") quizCorrectCount++;
+      if (bucket === "boss") bossCorrectCount++;
+
+      const accuracyBonus = 5;
+const streakBonus = streak >= 3 ? 5 : 0;
+
+const totalXP = baseXP + accuracyBonus + streakBonus;
+
+addXP(totalXP);
+      changeIntegrity(2);
+
+      if (streak === 3) {
+        addXP(10);
+        addSpecialBadge("3-Streak Master");
+      }
+      if (streak === 5) {
+        addXP(20);
+        addSpecialBadge("5-Streak Hero");
+      }
+
+      flashStats();
+      saveGame();
+    }
+
+    function registerWrongAnswer(integrityPenalty = -4, severity = "medium") {
+
+      streak = 0;
+
+      let penalty = integrityPenalty;
+
+      if (severity === "critical") {
+        penalty = -15;
+      }
+
+      if (severity === "high") {
+        penalty = -10;
+      }
+
+      if (severity === "medium") {
+        penalty = -6;
+      }
+
+      if (severity === "low") {
+        penalty = -3;
+      }
+
+      changeIntegrity(penalty);
+      saveGame();
+    }
+
+    function setResumeInfo(name) {
+      const box = document.getElementById("resumeInfo");
+      const data = peekSave(name);
+      if (!data) {
+        box.style.display = "none";
+        box.textContent = "";
+        return;
+      }
+      box.style.display = "block";
+      box.textContent = `Saved progress found — Level ${data.level}, ${data.topicsDone}/${topics.length} topics done, ${data.badges} badges, Integrity ${data.integrity}/100.`;
+    }
+
+    /* ============================================================
+       LOGIN / START FLOW
+    ============================================================ */
+    function handleLogin() {
+      const val = document.getElementById("username").value.trim();
+      if (!val) {
+        alert("Please enter your name to start.");
+        return;
+      }
+
+      username = val;
+
+      if (hasSave(username)) {
+        const resume = confirm(`A saved game exists for ${username}. Press OK to continue it, or Cancel to start fresh.`);
+        if (!resume) {
+          localStorage.removeItem(getSaveKey());
+          resetGameState();
+          saveGame();
+        } else {
+          loadGame();
+        }
+      } else {
+        resetGameState();
+        saveGame();
+      }
+
+      document.getElementById("menu-greeting").textContent = "👋 Welcome, " + username;
+      showScreen('menu');
+      renderTopicList();
+      updateStats();
+    }
+
+    document.getElementById("username").addEventListener("input", (e) => {
+      setResumeInfo(e.target.value);
+    });
+
+    document.getElementById("username").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleLogin();
+    });
+
+    /* ============================================================
+       MENU / STATS
+    ============================================================ */
+    function renderTopicList() {
+      const list = document.getElementById("topicList");
+      list.innerHTML = "";
+
+      topics.forEach((t, i) => {
+        const btn = document.createElement("button");
+        btn.className = "topic-btn" + (readTopics.includes(t.title) ? " done" : "");
+        btn.innerHTML = (readTopics.includes(t.title) ? "✅ " : "") + t.title;
+        btn.onclick = () => startTopic(i);
+        list.appendChild(btn);
+      });
+    }
+
+    function updateStats() {
+      document.getElementById("scoreDisplay").textContent = score;
+      document.getElementById("xpDisplay").textContent = xp;
+      document.getElementById("levelDisplay").textContent = level;
+      document.getElementById("streakDisplay").textContent = streak;
+      document.getElementById("integrityDisplay").textContent = integrity;
+      document.getElementById("badgeCount").textContent = badges.length;
+      document.getElementById("topicsDone").textContent = readTopics.length + "/" + topics.length;
+
+      const pct = Math.floor((readTopics.length / topics.length) * 100);
+      document.getElementById("progressFill").style.width = pct + "%";
+      document.getElementById("progressPct").textContent = pct + "%";
+
+      document.getElementById("levelProgressFill").style.width = getLevelProgressPercent() + "%";
+      document.getElementById("levelProgressText").textContent = (xp % XP_PER_LEVEL) + " / " + XP_PER_LEVEL + " XP";
+
+      document.getElementById("integrityFill").style.width = integrity + "%";
+      document.getElementById("integrityText").textContent = integrity + " / 100";
+
+      const rack = document.getElementById("badgeRack");
+      const sect = document.getElementById("badgeSection");
+      rack.innerHTML = badges.map(b => `<span class="badge-pill">🎖️ ${b}</span>`).join('');
+      sect.style.display = badges.length ? "block" : "none";
+
+      renderTopicList();
+
+      const finalBtn = document.getElementById("finalTestBtn");
+      const allTopicsDone = readTopics.length === topics.length;
+      finalBtn.disabled = !allTopicsDone;
+      finalBtn.innerHTML = allTopicsDone
+        ? "🏁 Start Thesis Submission Boss Round"
+        : "🔒 Complete all topics to unlock Boss Round";
+
+      saveGame();
+    }
+
+    function goMenuSafe() {
+      if (timerInterval) return;
+      showScreen('menu');
+      updateStats();
+    }
+
+    /* ============================================================
+       MINI GAMES
+    ============================================================ */
+    const SYMBOLS = ["📚", "📚", "📝", "📝", "🔎", "🔎"];
+    let firstPick = null, secondPick = null, pairsFound = 0, canPick = true;
+
+    function getMiniGameForTopic(topicIndex) {
+      if (topicMiniChallenges[topicIndex]) {
+        return topicMiniChallenges[topicIndex].type;
+      }
+      return shuffleArray(["memory", "tap", "sort"])[0];
+    }
+
+    function resetMiniGameWrappers() {
+      document.getElementById("memoryGameWrap").style.display = "none";
+      document.getElementById("tapGameWrap").style.display = "none";
+      document.getElementById("sortGameWrap").style.display = "none";
+      document.getElementById("detectiveGameWrap").style.display = "none";
+      isBusyAnswer = false;
+    }
+
+    function startTopic(i) {
+      currentTopic = i;
+      currentMiniGame = getMiniGameForTopic(i);
+      resetMiniGameWrappers();
+
+      if (currentMiniGame === "memory") startMemoryGame();
+      else if (currentMiniGame === "tap") startTapGame();
+      else if (currentMiniGame === "sort") startTopicSortGame();
+      else if (currentMiniGame === "detective") startDetectiveGame();
+
+      document.getElementById("minigame-topic-label").textContent = topics[i].title;
+      showScreen('minigame');
+    }
+
+    function startMemoryGame() {
+      document.getElementById("miniGameTypeTitle").textContent = "Academic Pattern Recognition";
+      document.getElementById("minigame-hint").textContent = "Match all 3 pairs";
+      document.getElementById("memoryGameWrap").style.display = "block";
+
+      pairsFound = 0;
+      firstPick = null;
+      secondPick = null;
+      canPick = true;
+
+      const arr = shuffleArray(SYMBOLS);
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+
+      arr.forEach((sym) => {
+        const btn = document.createElement("button");
+        btn.className = "symbol-btn";
+        btn.dataset.sym = sym;
+        btn.textContent = "?";
+        btn.onclick = () => flipTile(btn);
+        grid.appendChild(btn);
+      });
+    }
+
+    function flipTile(btn) {
+      if (currentMiniGame !== "memory") return;
+      if (!canPick || btn.textContent !== "?" || btn.classList.contains("matched")) return;
+
+      btn.textContent = btn.dataset.sym;
+
+      if (!firstPick) {
+        firstPick = btn;
+        return;
+      }
+
+      secondPick = btn;
+      canPick = false;
+
+      if (firstPick.dataset.sym === secondPick.dataset.sym) {
+        firstPick.classList.add("matched");
+        secondPick.classList.add("matched");
+        pairsFound++;
+        firstPick = null;
+        secondPick = null;
+        canPick = true;
+
+        if (pairsFound === 3) {
+          document.getElementById("minigame-hint").textContent = "🎉 Challenge complete!";
+          setTimeout(showQuestion, 450);
+        }
+      } else {
+        setTimeout(() => {
+          firstPick.textContent = "?";
+          secondPick.textContent = "?";
+          firstPick = null;
+          secondPick = null;
+          canPick = true;
+        }, 800);
+      }
+    }
+
+    function startTapGame() {
+      document.getElementById("miniGameTypeTitle").textContent = "Ethical Decision Response Test";
+      document.getElementById("minigame-hint").textContent = "Tap the glowing tile 5 times";
+      document.getElementById("tapGameWrap").style.display = "block";
+
+      tapCurrentHits = 0;
+      tapTargetCount = 5;
+
+      const tapGrid = document.getElementById("tapGrid");
+      tapGrid.innerHTML = "";
+
+      for (let i = 0; i < 9; i++) {
+        const btn = document.createElement("button");
+        btn.className = "tap-btn";
+        btn.textContent = "•";
+        btn.onclick = () => handleTap(btn);
+        tapGrid.appendChild(btn);
+      }
+
+      activateRandomTap();
+    }
+
+    function activateRandomTap() {
+      const buttons = [...document.querySelectorAll('.tap-btn')];
+      buttons.forEach(b => b.classList.remove('active'));
+      const randomBtn = buttons[Math.floor(Math.random() * buttons.length)];
+      if (randomBtn) randomBtn.classList.add('active');
+    }
+
+    function handleTap(btn) {
+      if (!btn.classList.contains('active')) return;
+
+      tapCurrentHits++;
+      document.getElementById("minigame-hint").textContent = `Hits: ${tapCurrentHits} / ${tapTargetCount}`;
+
+      if (tapCurrentHits >= tapTargetCount) {
+        document.getElementById("minigame-hint").textContent = "🎉 Challenge complete!";
+        setTimeout(showQuestion, 350);
+        return;
+      }
+
+      activateRandomTap();
+    }
+
+    function startTopicSortGame() {
+      const challenge = topicMiniChallenges[currentTopic] || {
+        title: "Citation Sorting",
+        hint: "Mark each item correctly",
+        labels: { good: "Needs Citation", risk: "No Citation" },
+        items: [
+          { id: 1, text: "A specific claim taken from a paper.", correct: "ethical" },
+          { id: 2, text: "Your own thesis chapter roadmap.", correct: "risky" },
+          { id: 3, text: "A sentence paraphrasing published research.", correct: "ethical" }
+        ]
+      };
+
+      document.getElementById("miniGameTypeTitle").textContent = challenge.title;
+      document.getElementById("minigame-hint").textContent = challenge.hint;
+      document.getElementById("sortGameWrap").style.display = "block";
+      currentSortChoices = {};
+
+      const sortList = document.getElementById("sortList");
+      sortList.innerHTML = "";
+
+      shuffleArray(challenge.items).forEach(item => {
+        const row = document.createElement("div");
+        row.className = "sort-row";
+        row.dataset.correct = item.correct;
+        row.dataset.id = item.id;
+
+        const label = document.createElement("div");
+        label.className = "sort-label";
+        label.textContent = item.text;
+
+        const actions = document.createElement("div");
+        actions.className = "sort-actions";
+
+        const ethicalBtn = document.createElement("button");
+        ethicalBtn.className = "sort-btn";
+        ethicalBtn.textContent = challenge.labels.good || "Correct";
+
+        const riskyBtn = document.createElement("button");
+        riskyBtn.className = "sort-btn";
+        riskyBtn.textContent = challenge.labels.risk || "Incorrect";
+
+        ethicalBtn.onclick = () => chooseSort(item.id, "ethical", ethicalBtn, riskyBtn);
+        riskyBtn.onclick = () => chooseSort(item.id, "risky", ethicalBtn, riskyBtn);
+
+        actions.appendChild(ethicalBtn);
+        actions.appendChild(riskyBtn);
+        row.appendChild(label);
+        row.appendChild(actions);
+        sortList.appendChild(row);
+      });
+    }
+
+    function chooseSort(id, value, ethicalBtn, riskBtn) {
+      currentSortChoices[id] = value;
+      ethicalBtn.classList.remove("selected-good");
+      riskBtn.classList.remove("selected-risk");
+
+      if (value === "ethical") ethicalBtn.classList.add("selected-good");
+      if (value === "risky") riskBtn.classList.add("selected-risk");
+    }
+
+    function submitSortGame() {
+      const rows = [...document.querySelectorAll('.sort-row')];
+      if (Object.keys(currentSortChoices).length < rows.length) {
+        alert("Please classify all items first.");
+        return;
+      }
+
+      const passed = rows.every(row => currentSortChoices[row.dataset.id] === row.dataset.correct);
+
+      if (passed) {
+        document.getElementById("minigame-hint").textContent = "🎉 Challenge complete!";
+        setTimeout(showQuestion, 350);
+      } else {
+        document.getElementById("minigame-hint").textContent = "Not quite — try again.";
+      }
+    }
+
+    function startDetectiveGame() {
+      const challenge = topicMiniChallenges[currentTopic];
+      if (!challenge) {
+        startMemoryGame();
+        return;
+      }
+
+      document.getElementById("miniGameTypeTitle").textContent = challenge.title;
+      document.getElementById("minigame-hint").textContent = challenge.hint;
+      document.getElementById("detectiveGameWrap").style.display = "block";
+
+      const detectiveList = document.getElementById("detectiveList");
+      detectiveList.innerHTML = `<div style="font-size:0.95rem; color:var(--text-muted); margin-bottom:6px; text-align:left;">${challenge.prompt}</div>`;
+
+      const prepared = prepareShuffledAnswers(challenge.options, challenge.correctIndex);
+
+      prepared.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "detective-btn";
+        btn.textContent = String.fromCharCode(65 + idx) + ". " + opt.text;
+
+        btn.onclick = () => {
+          if (isBusyAnswer) return;
+          isBusyAnswer = true;
+
+          detectiveList.querySelectorAll('.detective-btn').forEach((b, i) => {
+            b.style.pointerEvents = "none";
+            if (prepared[i].isCorrect) b.classList.add("correct");
+          });
+
+          if (!opt.isCorrect) btn.classList.add("wrong");
+
+          setTimeout(() => {
+            if (opt.isCorrect) {
+              document.getElementById("minigame-hint").textContent = "🎉 Challenge complete!";
+              showQuestion();
+            } else {
+              document.getElementById("minigame-hint").textContent = "Try again — look carefully.";
+              isBusyAnswer = false;
+              startDetectiveGame();
+            }
+          }, 600);
+        };
+
+        detectiveList.appendChild(btn);
+      });
+    }
+
+    /* ============================================================
+       QUESTIONS
+    ============================================================ */
+    function showQuestion() {
+      isBusyAnswer = false;
+      const div = document.getElementById("answers");
+      div.innerHTML = "";
+
+      let qData;
+      let modeLabel = "📌 Entry Question";
+
+      if (scenarioTopics[currentTopic]) {
+        qData = scenarioTopics[currentTopic];
+        modeLabel = "🎯 Real Thesis Scenario";
+      } else {
+        const t = topics[currentTopic];
+        qData = { q: t.q, a: t.a, c: t.c };
+      }
+
+      document.getElementById("questionModeLabel").textContent = modeLabel;
+      document.getElementById("q-topic-label").textContent = topics[currentTopic].title;
+      document.getElementById("question").textContent = qData.q;
+
+document.getElementById("difficultyText").textContent =
+"Difficulty Level: " + (topics[currentTopic].difficulty || "basic");
+
+      const shuffledAnswers = prepareShuffledAnswers(qData.a, qData.c);
+
+      shuffledAnswers.forEach((ansObj, i) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.textContent = String.fromCharCode(65 + i) + ". " + ansObj.text;
+        btn.onclick = () => checkAnswer(ansObj.isCorrect, btn, div, shuffledAnswers, !!scenarioTopics[currentTopic]);
+        div.appendChild(btn);
+      });
+
+      showScreen('question');
+    }
+
+    function checkAnswer(isCorrect, clickedBtn, container, shuffledAnswers, isScenario) {
+      if (isBusyAnswer) return;
+      isBusyAnswer = true;
+
+      const t = topics[currentTopic];
+
+      container.querySelectorAll('.answer-btn').forEach((b, idx) => {
+        b.style.pointerEvents = "none";
+        if (shuffledAnswers[idx].isCorrect) b.classList.add("correct");
+      });
+
+      let consequenceText = "";
+
+      if (!isCorrect) {
+        clickedBtn.classList.add("wrong");
+        mistakes.push(t.title);
+        registerWrongAnswer(
+          isScenario ? -8 : -4,
+          scenarioTopics[currentTopic]?.severity || "medium"
+        );
+        consequenceText = isScenario
+          ? "Consequence: risky thesis decision — your Integrity meter dropped more because this was a realistic submission scenario."
+          : "Consequence: weaker citation judgement — your Integrity meter dropped slightly.";
+      } else {
+        registerCorrectAnswer(isScenario ? 12 : 10, "entry");
+        consequenceText = isScenario
+          ? "Consequence: strong academic judgement — you protected your Integrity meter and gained extra XP."
+          : "Consequence: correct citation decision — steady progress and small Integrity gain.";
+      }
+
+      document.getElementById("qfeedback-icon").textContent = isCorrect ? "🎉" : "⚠️";
+      document.getElementById("questionFeedbackMsg").textContent = isCorrect ? "Correct!" : "Not quite.";
+      document.getElementById("questionFeedbackSuggest").textContent =
+        t.detail + "\n\n" + consequenceText;
+
+      updateStats();
+      setTimeout(() => {
+        isBusyAnswer = false;
+        showScreen('qfeedback');
+      }, 500);
+    }
+
+    function goToExplanation() {
+      const t = topics[currentTopic];
+      document.getElementById("exp-topic-label").textContent = t.title;
+      document.getElementById("detail").textContent = t.detail;
+      document.getElementById("reference").textContent = "📌 " + t.ref;
+      showScreen('explanation');
+    }
+
+    function showSimple() {
+      document.getElementById("simpleText").textContent = topics[currentTopic].simple;
+      showScreen('simple');
+    }
+
+    /* ============================================================
+       QUIZ
+    ============================================================ */
+    function startQuiz() {
+      quizIndex = 0;
+      quizScore = 0;
+      isBusyAnswer = false;
+      showScreen('quiz');
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const bank = quizBanks[currentTopic];
+      const q = bank[quizIndex];
+      const total = bank.length;
+
+      document.getElementById("quizCounter").textContent = "Question " + (quizIndex + 1) + " of " + total;
+      document.getElementById("quizScoreMini").textContent = quizScore + " / " + quizIndex;
+      document.getElementById("quizProgressFill").style.width = ((quizIndex / total) * 100) + "%";
+      document.getElementById("quizQ").textContent = q.q;
+
+      const div = document.getElementById("quizAns");
+      div.innerHTML = "";
+
+      const shuffledAnswers = prepareShuffledAnswers(q.a, q.c);
+
+      shuffledAnswers.forEach((ansObj, i) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.textContent = String.fromCharCode(65 + i) + ". " + ansObj.text;
+        btn.onclick = () => checkQuizAnswer(ansObj.isCorrect, btn, div, shuffledAnswers);
+        div.appendChild(btn);
+      });
+    }
+
+    function checkQuizAnswer(isCorrect, clickedBtn, container, shuffledAnswers) {
+      if (isBusyAnswer) return;
+      isBusyAnswer = true;
+
+      container.querySelectorAll('.answer-btn').forEach((b, idx) => {
+        b.style.pointerEvents = "none";
+        if (shuffledAnswers[idx].isCorrect) b.classList.add("correct");
+      });
+
+      if (isCorrect) {
+        quizScore++;
+        registerCorrectAnswer(15, "quiz");
+      } else {
+        clickedBtn.classList.add("wrong");
+        mistakes.push("Quiz – " + topics[currentTopic].title);
+        registerWrongAnswer(-4);
+      }
+
+      updateStats();
+      quizIndex++;
+
+      setTimeout(() => {
+        isBusyAnswer = false;
+        if (quizIndex < quizBanks[currentTopic].length) {
+          renderQuizQuestion();
+        } else {
+          showQuizFeedback();
+        }
+      }, 650);
+    }
+
+    function showQuizFeedback() {
+      const total = quizBanks[currentTopic].length;
+      const passed = quizScore >= QUIZ_PASS_MARK;
+      const topicTitle = topics[currentTopic].title;
+
+      let icon, msg, suggest;
+
+      if (quizScore === total) {
+        icon = "🏆";
+        msg = "Perfect!";
+        suggest = "Excellent work. You fully mastered this citation topic.";
+        addXP(20);
+        addSpecialBadge("Perfect Topic");
+        changeIntegrity(3);
+      } else if (passed) {
+        icon = "🎉";
+        msg = "Topic Completed!";
+        suggest = "Great job. You passed this topic and unlocked its completion.";
+        changeIntegrity(2);
+      } else if (quizScore >= 2) {
+        icon = "👍";
+        msg = "Good effort!";
+        suggest = "You are close, but you need at least " + QUIZ_PASS_MARK + "/" + total + " to complete this topic.";
+      } else {
+        icon = "📖";
+        msg = "Needs more study.";
+        suggest = "Read the explanation again carefully, then retry the quiz.";
+        changeIntegrity(-2);
+      }
+
+      if (passed && !readTopics.includes(topicTitle)) {
+        readTopics.push(topicTitle);
+        addXP(25);
+      }
+
+      if (passed && !badges.includes(topicTitle)) {
+        badges.push(topicTitle);
+      }
+
+      if (readTopics.length >= 1) addSpecialBadge("First Win");
+      if (readTopics.length === topics.length) addSpecialBadge("Citation Hero");
+
+      updateStats();
+
+      document.getElementById("quizFeedbackIcon").textContent = icon;
+      document.getElementById("quizFeedbackMsg").textContent = msg;
+      document.getElementById("quizScoreDisplay").textContent = quizScore + " / " + total;
+      document.getElementById("quizFeedbackSuggest").textContent = suggest + "\n\nIntegrity status: " + integrity + "/100.";
+
+      showScreen('quizfeedback');
+    }
+
+    /* ============================================================
+       FINAL BOSS ROUND
+    ============================================================ */
+    function buildFinalQuestionPool() {
+      const bossPool = [
+        {
+          q: "A sentence reports a research finding from another author. What is the best move?",
+          a: ["Cite the source in the text.", "Leave it uncited because it is short.", "Move it into a footnote without source."],
+          c: 0,
+          title: "Need Citation"
+        },
+        {
+          q: "You rewrote an author's idea in your own words. What now?",
+          a: ["No citation is needed because wording changed.", "It is a paraphrase and still needs citation.", "Only add citation if your supervisor asks."],
+          c: 1,
+          title: "Paraphrase"
+        },
+        {
+          q: "Which is correct for one author?",
+          a: ["(Author, 2024)", "[Author 2024]", "Author / 2024"],
+          c: 0,
+          title: "One Author"
+        },
+        {
+          q: "Which is correct for two authors?",
+          a: ["(Black & White, 2023)", "(Black, White, 2023)", "(Black and White 2023)"],
+          c: 0,
+          title: "Two Authors"
+        },
+        {
+          q: "Which is correct for several sources together?",
+          a: ["(A, 2021; B, 2022)", "(A, 2021, B, 2022)", "[A / B]"],
+          c: 0,
+          title: "Multiple Sources"
+        },
+        {
+          q: "A copied figure with no changes should usually be labeled:",
+          a: ["adopted from", "modified from", "no source needed"],
+          c: 0,
+          title: "Figures"
+        },
+        {
+          q: "A translated table from another source:",
+          a: ["Still needs citation.", "Becomes original automatically.", "Only needs a new title."],
+          c: 0,
+          title: "Tables"
+        },
+        {
+          q: "A borrowed code fragment in the appendix:",
+          a: ["Should also be cited.", "Never needs citation.", "Can be treated as your own if short."],
+          c: 0,
+          title: "Code"
+        },
+        {
+          q: "A source in the text but missing from the reference list is:",
+          a: ["A problem.", "Normal.", "Better than the opposite."],
+          c: 0,
+          title: "Reference List"
+        },
+        {
+          q: "Paraphrasing without citation is:",
+          a: ["Plagiarism risk.", "Proper academic writing.", "Only a grammar issue."],
+          c: 0,
+          title: "Plagiarism"
+        },
+        {
+          q: "AI-generated content used in the thesis should be:",
+          a: ["Disclosed and cited appropriately.", "Hidden if it sounds polished.", "Mentioned only in conversation."],
+          c: 0,
+          title: "AI Citation"
+        },
+        {
+          q: "Two sources by same authors in the same year should be distinguished by:",
+          a: ["Letters such as a and b.", "Different colors.", "Different font size."],
+          c: 0,
+          title: "Same Year"
+        },
+        {
+          q: "A list summarising three papers should:",
+          a: ["Have citation support.", "Never be cited.", "Be deleted from academic writing."],
+          c: 0,
+          title: "Lists"
+        },
+        {
+          q: "Which one best reflects RTU consistency?",
+          a: ["Use one referencing style throughout.", "Mix styles if you know many.", "Change style every chapter."],
+          c: 0,
+          title: "Consistency"
+        }
+      ];
+
+      return shuffleArray(bossPool).slice(0, 12);
+    }
+
+    function startFinal() {
+      if (readTopics.length !== topics.length) {
+        alert("Complete all topics first to unlock the Boss Round.");
+        return;
+      }
+
+      addSpecialBadge("Final Challenger");
+      finalIndex = 0;
+      time = 75;
+      finalQuestions = buildFinalQuestionPool();
+      isBusyAnswer = false;
+
+      if (timerInterval) clearInterval(timerInterval);
+
+      const timerEl = document.getElementById("timer");
+      timerEl.textContent = time;
+      timerEl.className = "timer-display";
+
+      timerInterval = setInterval(() => {
+        time--;
+        const el = document.getElementById("timer");
+        el.textContent = time;
+        el.className = "timer-display" + (time <= 12 ? " urgent" : "");
+
+        if (time <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          showResult();
+        }
+      }, 1000);
+
+      showScreen('final');
+      nextFinal();
+    }
+
+    function nextFinal() {
+      if (finalIndex >= finalQuestions.length) {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = null;
+        if (integrity >= 85) addSpecialBadge("Defense Passed");
+        showResult();
+        return;
+      }
+
+      isBusyAnswer = false;
+      const t = finalQuestions[finalIndex];
+
+      document.getElementById("finalProgress").textContent = (finalIndex + 1) + " / " + finalQuestions.length;
+      document.getElementById("finalProgressFill").style.width = ((finalIndex / finalQuestions.length) * 100) + "%";
+      document.getElementById("finalQ").textContent = t.q;
+
+      const div = document.getElementById("finalAns");
+      div.innerHTML = "";
+
+      const shuffledAnswers = prepareShuffledAnswers(t.a, t.c);
+
+      shuffledAnswers.forEach((ansObj, i) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.textContent = String.fromCharCode(65 + i) + ". " + ansObj.text;
+
+        btn.onclick = () => {
+          if (isBusyAnswer) return;
+          isBusyAnswer = true;
+
+          div.querySelectorAll('.answer-btn').forEach((b, idx) => {
+            b.style.pointerEvents = "none";
+            if (shuffledAnswers[idx].isCorrect) b.classList.add("correct");
+          });
+
+          if (ansObj.isCorrect) {
+            registerCorrectAnswer(20, "boss");
+            changeIntegrity(1);
+          } else {
+            mistakes.push("Boss Round – " + t.title);
+            btn.classList.add("wrong");
+            registerWrongAnswer(-6);
+          }
+
+          updateStats();
+          finalIndex++;
+
+          setTimeout(() => {
+            nextFinal();
+          }, 550);
+        };
+
+        div.appendChild(btn);
+      });
+    }
+
+    /* ============================================================
+       RESULT / RESTART
+    ============================================================ */
+    function showResult() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+
+      document.getElementById("resultGreeting").textContent = "Well done, " + username + "!";
+      document.getElementById("scoreText").textContent = score;
+      document.getElementById("resultXP").textContent = xp;
+      document.getElementById("resultLevel").textContent = level;
+      document.getElementById("resultBestStreak").textContent = bestStreak;
+      document.getElementById("resultIntegrity").textContent = integrity;
+      document.getElementById("resultEntryScore").textContent = entryCorrectCount;
+      document.getElementById("resultQuizScore").textContent = quizCorrectCount;
+      document.getElementById("resultBossScore").textContent = bossCorrectCount;
+      document.getElementById("resultTopicsDone").textContent = readTopics.length + "/" + topics.length;
+
+      const rack = document.getElementById("finalBadges");
+      rack.innerHTML = badges.length
+        ? badges.map(b => `<span class="badge-pill">🎖️ ${b}</span>`).join('')
+        : '<span style="color:var(--text-muted); font-size:0.85rem;">No badges earned yet.</span>';
+
+      const unique = [...new Set(mistakes)];
+
+      const citationReliability = Math.max(50, integrity);
+
+      document.getElementById("citationReliability").textContent =
+        citationReliability + "%";
+
+      document.getElementById("aiTransparency").textContent =
+        integrity >= 80 ? "High" : "Moderate";
+
+      document.getElementById("academicRisk").textContent =
+        integrity >= 85
+          ? "LOW"
+          : integrity >= 65
+          ? "MODERATE"
+          : "HIGH";
+
+      let weakestTopic = "None";
+      let highestMistakes = 0;
+
+      for (const topic in weakAreas) {
+        if (weakAreas[topic] > highestMistakes) {
+          highestMistakes = weakAreas[topic];
+          weakestTopic = topic;
+        }
+      }
+
+      let performanceRating = "";
+
+      if (integrity >= 90) {
+        performanceRating = "Excellent Ethical Awareness";
+      } else if (integrity >= 70) {
+        performanceRating = "Moderate Ethical Awareness";
+      } else {
+        performanceRating = "High Academic Integrity Risk";
+      }
+
+      document.getElementById("performanceRating").textContent =
+        performanceRating;
+      const ms = document.getElementById("mistakesSection");
+
+      if (unique.length) {
+        ms.style.display = "block";
+        document.getElementById("mistakesText").innerHTML =
+`
+<b>Adaptive Recommendation:</b>
+Review weak academic integrity modules before final thesis submission.<br><br><b>Weakest Learning Area:</b> ${weakestTopic}
+<br><br>
+`
++
+unique.map(m => `• ${m}`).join('<br>');
+      } else {
+        ms.style.display = "none";
+      }
+
+      saveGame();
+      showScreen('result');
+    }
+
+    function restartGame() {
+      if (!username) return;
+
+      const confirmReset = confirm(`Reset all saved progress for ${username}? This cannot be undone.`);
+      if (!confirmReset) return;
+
+      localStorage.removeItem(getSaveKey());
+      resetGameState();
+      saveGame();
+
+      document.getElementById("menu-greeting").textContent = "👋 Welcome, " + username;
+      updateStats();
+      showScreen('menu');
+    }
+
+    /* ============================================================
+       INITIAL UI
+    ============================================================ */
+    setResumeInfo("");
+  </script>
+</body>
+
+</html>
